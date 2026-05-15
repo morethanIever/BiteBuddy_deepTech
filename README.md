@@ -6,7 +6,7 @@
 **Stack:** Node.js + Express + sql.js (SQLite) + WebSocket · React + Vite + Tailwind + react-leaflet
 
 ## Demo video
-[![Watch this](https://img.youtube.com/vi/DOi34U8avsc/0.jpg)](https://youtu.be/DOi34U8avsc)
+[![▶ Watch Demo Click this link](https://img.youtube.com/vi/DOi34U8avsc/0.jpg)](https://youtu.be/DOi34U8avsc)
 
 ---
 
