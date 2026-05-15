@@ -30,6 +30,12 @@ initPromise.then(() => {
   initSchema();
   initWebSocket(server);
 
+  const { count } = db.prepare('SELECT COUNT(*) as count FROM restaurants').get();
+  if (count === 0) {
+    console.log('📦 Empty database — auto-seeding...');
+    await require('../scripts/seed.js');
+  }
+
   const authRoutes        = require('./routes/auth');
   const restaurantRoutes  = require('./routes/restaurants');
   const scanRoutes        = require('./routes/scans');
