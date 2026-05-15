@@ -6,7 +6,7 @@
 **Stack:** Node.js + Express + sql.js (SQLite) + WebSocket · React + Vite + Tailwind + react-leaflet
 
 ## Demo video
-<video controls src="BiteBuddy.mp4" title="Title"></video>
+[![Watch this](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://youtu.be/DOi34U8avsc)
 
 ---
 
