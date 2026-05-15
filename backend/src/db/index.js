@@ -105,6 +105,19 @@ function initSchema() {
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   )`);
 
+  // Auto-seed demo data when the database is empty
+  const rowCount = _db.exec('SELECT COUNT(*) FROM restaurants');
+  if ((rowCount[0]?.values[0]?.[0] ?? 0) === 0) {
+    try {
+      const { seed } = require('../../scripts/seed');
+      seed();
+      save();
+      console.log('✅ Auto-seed complete');
+    } catch (e) {
+      console.error('Auto-seed failed:', e);
+    }
+  }
+
   // Incremental migrations for applications table
   const addAppCol = (sql) => { try { _db.run(sql); } catch (_) {} };
   addAppCol('ALTER TABLE applications ADD COLUMN progress INTEGER NOT NULL DEFAULT 0');
