@@ -12,6 +12,7 @@ import Login           from './pages/Login';
 import Pricing         from './pages/Pricing';
 import Apply           from './pages/Apply';
 import DeviceSimulator from './pages/DeviceSimulator';
+import Applications   from './pages/Applications';
 
 export default function App() {
   return (
@@ -37,6 +38,9 @@ export default function App() {
                   } />
                   <Route path="/dashboard" element={
                     <ProtectedRoute><Dashboard /></ProtectedRoute>
+                  } />
+                  <Route path="/applications" element={
+                    <ProtectedRoute><Applications /></ProtectedRoute>
                   } />
                   <Route path="*" element={
                     <div className="pt-16 min-h-screen flex items-center justify-center text-center px-4">

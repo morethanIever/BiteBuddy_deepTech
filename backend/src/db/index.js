@@ -99,8 +99,17 @@ function initSchema() {
     restaurant_name TEXT NOT NULL, cuisine_type TEXT, area TEXT NOT NULL,
     contact_email TEXT, contact_phone TEXT, notes TEXT,
     status TEXT NOT NULL DEFAULT 'pending',
+    progress INTEGER NOT NULL DEFAULT 0,
+    contacted_at TEXT DEFAULT NULL,
+    admin_notes TEXT DEFAULT NULL,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   )`);
+
+  // Incremental migrations for applications table
+  const addAppCol = (sql) => { try { _db.run(sql); } catch (_) {} };
+  addAppCol('ALTER TABLE applications ADD COLUMN progress INTEGER NOT NULL DEFAULT 0');
+  addAppCol('ALTER TABLE applications ADD COLUMN contacted_at TEXT DEFAULT NULL');
+  addAppCol('ALTER TABLE applications ADD COLUMN admin_notes TEXT DEFAULT NULL');
 
   // Migration: detect old schema (salmonella column) and rebuild scans table
   const tableInfo = _db.exec("PRAGMA table_info(scans)");
