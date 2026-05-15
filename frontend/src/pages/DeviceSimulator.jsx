@@ -179,6 +179,7 @@ export default function DeviceSimulator() {
     esRef.current = es;
 
     let sseResultReceived = false;
+    let fallbackCalled    = false;
 
     es.addEventListener('phase', e => {
       const d = JSON.parse(e.data);
@@ -210,7 +211,10 @@ export default function DeviceSimulator() {
 
     es.onerror = () => {
       es.close();
-      if (!sseResultReceived) fallbackSimulate(token);
+      if (!sseResultReceived && !fallbackCalled) {
+        fallbackCalled = true;
+        fallbackSimulate(token);
+      }
     };
   }, [restaurantId, preset, scanning, reset, toast]);
 
@@ -575,7 +579,18 @@ export default function DeviceSimulator() {
                 border: `2px solid ${STATUS_COLORS[result.result]}66`,
                 borderRadius: 16, padding: '1.5rem',
                 animation: 'none',
+                position: 'relative',
               }}>
+                <button
+                  onClick={reset}
+                  title="Dismiss"
+                  style={{
+                    position: 'absolute', top: 12, right: 12,
+                    background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)',
+                    color: 'rgba(255,255,255,0.45)', borderRadius: 6, width: 26, height: 26,
+                    cursor: 'pointer', fontSize: 14, lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}
+                >✕</button>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
                   <div>
                     <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 6 }}>

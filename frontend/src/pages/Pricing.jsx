@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
 
-const PLANS = [
+const TRAVELER_PLANS = [
   {
     tier: 'Traveler',
     price: 'Free',
     period: 'forever',
-    desc: 'Perfect for tourists visiting Malaysia',
+    desc: 'For tourists and visitors exploring Malaysia',
     features: [
       'View safe restaurant map',
       'Scan QR codes to verify restaurants',
-      'Basic area & cuisine search',
+      'Search by cuisine type & area',
       'Mobile-friendly interface',
     ],
     cta: 'Get Started Free',
@@ -20,11 +20,11 @@ const PLANS = [
     tier: 'Explorer',
     price: 'RM 29',
     period: 'per month',
-    desc: 'Frequent travelers & expats in SE Asia',
+    desc: 'For frequent travelers and expats living in SE Asia',
     features: [
       'Everything in Traveler',
-      'Real-time push alerts for areas you follow',
-      'Filter by cuisine type & safety score',
+      'Real-time push alerts for your followed areas',
+      'Filter by safety score & cuisine',
       'Restaurant scan history (30 days)',
       'Priority support',
     ],
@@ -32,24 +32,83 @@ const PLANS = [
     ctaLink: '/apply',
     featured: true,
   },
+];
+
+const RESTAURANT_PLANS = [
   {
-    tier: 'Restaurant',
+    tier: 'Basic',
     price: 'RM 299',
     period: 'per month',
-    desc: 'Food vendors & restaurants seeking certification',
+    badge: null,
+    tagline: 'Get certified and build customer trust',
+    desc: 'Everything a single restaurant needs to get started with food safety certification — device, consumables, and a public-facing certificate included.',
     features: [
-      'BiteBuddy device provided & installed',
-      'Unlimited monthly scans',
-      'Certified QR certificate for display',
-      'Public listing on safe restaurant map',
-      'Admin dashboard access',
-      'B2B partnership badge',
+      'BiteBuddy biosensor device',
+      'Monthly test strip refills',
+      'QR safety certificate',
+      'Public map listing',
     ],
-    cta: 'Apply Now',
+    cta: 'Apply for Basic',
     ctaLink: '/apply',
     featured: false,
   },
+  {
+    tier: 'Premium',
+    price: 'RM 549',
+    period: 'per month',
+    badge: '⭐ Most Popular',
+    tagline: 'Stand out and grow with verified safety',
+    desc: 'Everything in Basic, plus premium visibility, business tools, and dedicated support — built for restaurants that want to turn food safety into a competitive advantage.',
+    features: [
+      'Everything in Basic',
+      'Top placement on the Safe Map',
+      'Admin dashboard access',
+      'B2B partnership badge',
+      'Monthly safety report',
+      'Dedicated support',
+    ],
+    cta: 'Apply for Premium',
+    ctaLink: '/apply',
+    featured: true,
+  },
 ];
+
+function PlanCard({ plan }) {
+  return (
+    <div className={`card p-8 relative ${plan.featured ? 'border-2 border-green shadow-lg' : ''}`}>
+      {plan.featured && (
+        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-green text-white text-xs font-bold px-4 py-1 rounded-full whitespace-nowrap">
+          {plan.badge || '⭐ Most Popular'}
+        </div>
+      )}
+      <div className="text-xs font-bold text-green uppercase tracking-widest mb-2">{plan.tier}</div>
+      <div className="font-head text-4xl font-extrabold text-navy mb-0.5">{plan.price}</div>
+      <div className="text-sm text-gray-400 mb-2">{plan.period}</div>
+      {plan.tagline && (
+        <div className="text-sm font-semibold text-navy mb-1">{plan.tagline}</div>
+      )}
+      <div className="text-sm text-gray-400 leading-relaxed mb-6">{plan.desc}</div>
+      <ul className="flex flex-col gap-2.5 mb-8">
+        {plan.features.map(f => (
+          <li key={f} className="flex items-start gap-2 text-sm text-navy">
+            <span className="text-green font-bold mt-0.5 flex-shrink-0">✓</span>
+            {f}
+          </li>
+        ))}
+      </ul>
+      <Link
+        to={plan.ctaLink}
+        className={`block text-center py-3 rounded-lg font-semibold text-sm transition no-underline ${
+          plan.featured
+            ? 'bg-green text-white hover:bg-green-dark'
+            : 'border border-gray-300 text-navy hover:border-green hover:text-green'
+        }`}
+      >
+        {plan.cta} →
+      </Link>
+    </div>
+  );
+}
 
 export default function Pricing() {
   return (
@@ -60,41 +119,24 @@ export default function Pricing() {
           <p className="text-gray-400 max-w-md mx-auto">Whether you're a traveler or a restaurant owner — we have a plan that fits.</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {PLANS.map(plan => (
-            <div
-              key={plan.tier}
-              className={`card p-8 relative ${plan.featured ? 'border-2 border-green shadow-lg' : ''}`}
-            >
-              {plan.featured && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-green text-white text-xs font-bold px-4 py-1 rounded-full whitespace-nowrap">
-                  ⭐ Most Popular
-                </div>
-              )}
-              <div className="text-xs font-bold text-green uppercase tracking-widest mb-2">{plan.tier}</div>
-              <div className="font-head text-4xl font-extrabold text-navy mb-0.5">{plan.price}</div>
-              <div className="text-sm text-gray-400 mb-2">{plan.period}</div>
-              <div className="text-sm text-gray-400 leading-relaxed mb-6">{plan.desc}</div>
-              <ul className="flex flex-col gap-2.5 mb-8">
-                {plan.features.map(f => (
-                  <li key={f} className="flex items-start gap-2 text-sm text-navy">
-                    <span className="text-green font-bold mt-0.5 flex-shrink-0">✓</span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to={plan.ctaLink}
-                className={`block text-center py-3 rounded-lg font-semibold text-sm transition no-underline ${
-                  plan.featured
-                    ? 'bg-green text-white hover:bg-green-dark'
-                    : 'border border-gray-300 text-navy hover:border-green hover:text-green'
-                }`}
-              >
-                {plan.cta} →
-              </Link>
-            </div>
-          ))}
+        {/* Traveler Plans */}
+        <div className="mb-4">
+          <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">For Travelers</h2>
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            {TRAVELER_PLANS.map(plan => (
+              <PlanCard key={plan.tier} plan={plan} />
+            ))}
+          </div>
+        </div>
+
+        {/* Restaurant Plans */}
+        <div className="mb-12">
+          <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">For Restaurants</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {RESTAURANT_PLANS.map(plan => (
+              <PlanCard key={plan.tier} plan={plan} />
+            ))}
+          </div>
         </div>
 
         {/* Enterprise */}
