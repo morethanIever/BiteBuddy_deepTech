@@ -210,10 +210,10 @@ export default function MapPage() {
               <button onClick={() => setSelected(null)} className="text-gray-300 hover:text-gray-500 text-xl border-0 bg-transparent cursor-pointer">×</button>
             </div>
             <div className="grid sm:grid-cols-3 gap-3 mb-4">
-              {['salmonella','ecoli','staph'].map(b => (
+              {['ecoli','staph','bcereus'].map(b => (
                 <div key={b} className="bg-gray-50 rounded-lg p-3">
                   <div className="text-xs text-gray-400 italic mb-1">
-                    {b === 'salmonella' ? 'Salmonella spp.' : b === 'ecoli' ? 'E. coli O157:H7' : 'Staph. aureus'}
+                    {b === 'ecoli' ? 'Salmonella spp.' : b === 'ecoli' ? 'E. coli O157:H7' : 'Staph. aureus'}
                   </div>
                   <div className="font-semibold text-sm" style={{color: bacteriaColor(selected[b])}}>
                     {selected[b] || '—'}
