@@ -33,7 +33,7 @@ initPromise.then(() => {
   const { count } = db.prepare('SELECT COUNT(*) as count FROM restaurants').get();
   if (count === 0) {
     console.log('📦 Empty database — auto-seeding...');
-    require('../scripts/seed.js');
+    await require('../scripts/seed.js');
   }
 
   const authRoutes        = require('./routes/auth');
