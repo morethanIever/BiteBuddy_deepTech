@@ -1,0 +1,109 @@
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useAuth } from '../lib/auth';
+
+export default function Nav() {
+  const { pathname } = useLocation();
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const links = [
+    { to: '/',        label: 'Home' },
+    { to: '/map',     label: '🗺 Safe Map' },
+    { to: '/pricing', label: 'Pricing' },
+    { to: '/apply',   label: 'Get Certified' },
+  ];
+
+  function handleLogout() {
+    logout();
+    navigate('/');
+  }
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200">
+      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <Link to="/" className="font-head text-2xl font-extrabold text-navy no-underline">
+          Bite<span className="text-green">Buddy</span>
+        </Link>
+
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-1">
+          {links.map(l => (
+            <Link
+              key={l.to}
+              to={l.to}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition no-underline ${
+                pathname === l.to
+                  ? 'bg-green-light text-green-dark'
+                  : 'text-gray-500 hover:text-navy hover:bg-gray-100'
+              }`}
+            >
+              {l.label}
+            </Link>
+          ))}
+          {isAuthenticated ? (
+            <>
+              <Link
+                to="/dashboard"
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition no-underline ${
+                  pathname.startsWith('/dashboard')
+                    ? 'bg-green-light text-green-dark'
+                    : 'text-gray-500 hover:text-navy hover:bg-gray-100'
+                }`}
+              >
+                Dashboard
+                <span className="ml-1.5 bg-amber text-white text-xs font-bold px-1.5 py-0.5 rounded-full">Admin</span>
+              </Link>
+              <button onClick={handleLogout} className="ml-2 text-sm text-gray-400 hover:text-danger transition cursor-pointer border-0 bg-transparent">
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="ml-2 btn-primary text-sm px-4 py-2 no-underline"
+            >
+              Admin Login
+            </Link>
+          )}
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden p-2 rounded-lg hover:bg-gray-100 border-0 bg-transparent cursor-pointer"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+        >
+          <div className="w-5 h-0.5 bg-navy mb-1 transition-all" />
+          <div className="w-5 h-0.5 bg-navy mb-1" />
+          <div className="w-5 h-0.5 bg-navy" />
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4 flex flex-col gap-2">
+          {links.map(l => (
+            <Link
+              key={l.to}
+              to={l.to}
+              onClick={() => setMenuOpen(false)}
+              className="block px-4 py-2.5 rounded-lg text-sm font-medium text-navy hover:bg-gray-50 no-underline"
+            >
+              {l.label}
+            </Link>
+          ))}
+          {isAuthenticated ? (
+            <>
+              <Link to="/dashboard" onClick={() => setMenuOpen(false)} className="block px-4 py-2.5 rounded-lg text-sm font-medium text-navy hover:bg-gray-50 no-underline">Dashboard</Link>
+              <button onClick={handleLogout} className="text-left px-4 py-2.5 text-sm text-danger border-0 bg-transparent cursor-pointer">Logout</button>
+            </>
+          ) : (
+            <Link to="/login" onClick={() => setMenuOpen(false)} className="btn-primary text-center text-sm no-underline">Admin Login</Link>
+          )}
+        </div>
+      )}
+    </nav>
+  );
+}

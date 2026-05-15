@@ -1,0 +1,14 @@
+{
+  "name": "bitebuddy",
+  "version": "1.0.0",
+  "description": "BiteBuddy — Eat Safe. Anywhere.",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install --prefix backend --ignore-scripts && npm install --prefix frontend",
+    "seed": "npm run seed --prefix backend",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "setup": "npm run install:all && npm run seed"
+  }
+}

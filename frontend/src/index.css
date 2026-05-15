@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #F7F9F6;
+    color: #0C1B2E;
+    min-height: 100vh;
+  }
+  h1, h2, h3, h4, .font-head { font-family: 'Syne', sans-serif; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-green text-white font-semibold px-6 py-3 rounded-lg transition-all hover:bg-green-dark active:scale-95 cursor-pointer border-0;
+  }
+  .btn-outline {
+    @apply bg-transparent text-navy border border-gray-300 font-medium px-6 py-3 rounded-lg transition-all hover:border-green hover:text-green cursor-pointer;
+  }
+  .card {
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm;
+  }
+  .badge-safe    { @apply bg-green-light text-green-dark font-bold text-xs px-3 py-1 rounded-full; }
+  .badge-warning { @apply bg-yellow-100 text-yellow-800 font-bold text-xs px-3 py-1 rounded-full; }
+  .badge-danger  { @apply bg-red-100 text-red-800 font-bold text-xs px-3 py-1 rounded-full; }
+  .badge-pending { @apply bg-gray-100 text-gray-600 font-bold text-xs px-3 py-1 rounded-full; }
+
+  .input-field {
+    @apply w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm font-body outline-none transition focus:border-green focus:ring-1 focus:ring-green;
+  }
+  .section-title { @apply font-head text-3xl font-extrabold mb-2; }
+  .section-sub   { @apply text-gray-500 text-base mb-8; }
+}
+
+/* Leaflet map z-index fix */
+.leaflet-container { z-index: 1; border-radius: 0 0 0 0; }
+.leaflet-control-zoom { border: 1px solid #e5e7eb !important; }
+
+/* Custom map pin */
+.custom-pin {
+  width: 36px; height: 36px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  display: flex; align-items: center; justify-content: center;
+}
+.custom-pin .inner {
+  transform: rotate(45deg);
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  line-height: 1;
+}
+.pin-safe    { background: #1D9E75; }
+.pin-warning { background: #EF9F27; }
+.pin-danger  { background: #E24B4A; }
+.pin-pending { background: #888780; }
+
+/* Toast animations */
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.toast-enter { animation: slideUp 0.3s ease forwards; }
+
+/* Print styles for QR certificate */
+@media print {
+  body * { visibility: hidden; }
+  #qr-certificate, #qr-certificate * { visibility: visible; }
+  #qr-certificate {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+}
+
+/* Pulse animation for live indicator */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.4); }
+}
+.pulse-dot { animation: pulse-dot 2s infinite; }
+
+/* Bar chart animation */
+@keyframes growBar { from { width: 0; } }
+.bar-animated { animation: growBar 1s ease forwards; }
+
+/* Skeleton loading */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
