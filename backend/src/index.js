@@ -13,6 +13,8 @@ app.use(cors({ origin: process.env.FRONTEND_URL || '*', credentials: true }));
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
 
+app.set('trust proxy', 1);
+
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
   next();
@@ -27,12 +29,6 @@ const scanLimiter = rateLimit({ windowMs: 60000, max: 60, message: { error: 'Sca
 initPromise.then(() => {
   initSchema();
   initWebSocket(server);
-
-  const { count } = db.prepare('SELECT COUNT(*) as count FROM restaurants').get();
-  if (count === 0) {
-    console.log('📦 Empty database — auto-seeding...');
-    await require('../scripts/seed.js');
-  }
 
   const authRoutes        = require('./routes/auth');
   const restaurantRoutes  = require('./routes/restaurants');
