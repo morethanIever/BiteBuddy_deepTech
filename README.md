@@ -5,6 +5,9 @@
 
 **Stack:** Node.js + Express + sql.js (SQLite) + WebSocket · React + Vite + Tailwind + react-leaflet
 
+## Demo video
+<video controls src="BiteBuddy.mp4" title="Title"></video>
+
 ---
 
 ## Quick Start (Local Dev)
