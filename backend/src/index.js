@@ -9,6 +9,8 @@ const { initWebSocket } = require('./lib/websocket');
 const app = express();
 const server = http.createServer(app);
 
+app.set('trust proxy', 1);
+
 app.use(cors({ origin: process.env.FRONTEND_URL || '*', credentials: true }));
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
