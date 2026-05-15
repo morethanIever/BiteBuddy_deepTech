@@ -12,7 +12,8 @@ import Login           from './pages/Login';
 import Pricing         from './pages/Pricing';
 import Apply           from './pages/Apply';
 import DeviceSimulator from './pages/DeviceSimulator';
-import Applications   from './pages/Applications';
+import Applications      from './pages/Applications';
+import RestaurantPortal from './pages/RestaurantPortal';
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
                   <Route path="/map"      element={<MapPage />} />
                   <Route path="/pricing"  element={<Pricing />} />
                   <Route path="/apply"    element={<Apply />} />
+                  <Route path="/portal"  element={<RestaurantPortal />} />
                   <Route path="/login"    element={<Login />} />
                   <Route path="/simulator" element={
                     <ProtectedRoute><DeviceSimulator /></ProtectedRoute>

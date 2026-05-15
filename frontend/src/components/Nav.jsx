@@ -14,6 +14,7 @@ export default function Nav() {
     { to: '/map',     label: '🗺 Safe Map' },
     { to: '/pricing', label: 'Pricing' },
     { to: '/apply',   label: 'Get Certified' },
+    { to: '/portal',  label: '🍽 Restaurant' },
   ];
   const adminLinks = [
     { to: '/simulator',    label: '🔬 Device Sim',  badge: null },

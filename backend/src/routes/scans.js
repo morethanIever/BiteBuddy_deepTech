@@ -115,6 +115,45 @@ router.post('/simulate',
   }
 );
 
+// ── Restaurant portal: device-key authenticated test (ingredient-aware) ──────
+// POST /api/scans/device-test   Headers: X-Device-Key: BB-DEV-001-ALPHA
+router.post('/device-test',
+  requireDeviceKey,
+  body('restaurant_id').isInt({ min: 1 }),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+    const { restaurant_id, ingredient } = req.body;
+
+    // Weighted preset by ingredient risk profile
+    const riskPresets = {
+      seafood:    ['safe','safe','safe','warning','warning','danger'],
+      meat:       ['safe','safe','safe','safe','warning','danger'],
+      poultry:    ['safe','safe','safe','safe','warning','danger'],
+      rice:       ['safe','safe','safe','safe','safe','warning'],
+      dairy:      ['safe','safe','safe','safe','warning','warning'],
+      vegetables: ['safe','safe','safe','safe','safe','warning'],
+    };
+    const pool   = riskPresets[ingredient] || ['safe','safe','safe','safe','warning','danger'];
+    const preset = pool[Math.floor(Math.random() * pool.length)];
+
+    const pipeline = simulateFullPipeline(preset);
+    const { ecoli, staph, bcereus, raw_nA, cfu_per_ml, score, result, ...meta } = pipeline;
+
+    const r = createScan(
+      restaurant_id,
+      { ecoli, staph, bcereus },
+      req.device.key_value,
+      `Portal test — ${ingredient || 'General'}`,
+      { raw_nA, cfu_per_ml, ...meta }
+    );
+
+    if (r.error) return res.status(r.status).json({ error: r.error });
+    res.status(201).json({ ...r.data, preset, ingredient });
+  }
+);
+
 // ── Demo: stream scan progress via SSE (for the live device UI) ───────────────
 // GET /api/scans/stream/:restaurant_id?preset=safe&token=<jwt>
 // EventSource can't send custom headers, so the JWT is accepted from a query param.

@@ -7,7 +7,7 @@ export function ToastProvider({ children }) {
 
   const showToast = useCallback((message, type = 'info', duration = 3500) => {
     const id = Date.now();
-    setToasts(t => [...t.slice(-4), { id, message, type }]);
+    setToasts([{ id, message, type }]);
     setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), duration);
   }, []);
 
@@ -21,13 +21,15 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={showToast}>
       {children}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none">
-        {toasts.map(t => (
-          <div key={t.id} className={`toast-enter px-4 py-3 rounded-lg shadow-lg text-sm font-medium max-w-xs ${colors[t.type]}`}>
-            {t.message}
-          </div>
-        ))}
-      </div>
+      {toasts.length > 0 && (
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none">
+          {toasts.map(t => (
+            <div key={t.id} className={`toast-enter px-4 py-3 rounded-lg shadow-lg text-sm font-medium max-w-xs ${colors[t.type]}`}>
+              {t.message}
+            </div>
+          ))}
+        </div>
+      )}
     </ToastContext.Provider>
   );
 }
