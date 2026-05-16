@@ -30,7 +30,7 @@ export default function VerifyPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  const verifyUrl = `${window.location.origin}/verify/${id}`;
+  const verifyUrl = `${import.meta.env.VITE_PUBLIC_URL || window.location.origin}/verify/${id}`;
   const style = data ? (STATUS_STYLES[data.status] || STATUS_STYLES.pending) : STATUS_STYLES.pending;
 
   if (loading) return (
